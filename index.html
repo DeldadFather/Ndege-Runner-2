@@ -175,33 +175,39 @@
   .stat-box .sb-v { font-family:'Black Ops One',monospace; font-size:20px; color:var(--amber); text-shadow:0 0 8px var(--orange); }
   .stat-box .sb-v.sky-v { color:var(--sky); text-shadow:0 0 8px var(--sky); }
 
-  /* Touch zones — always visible on touch devices, invisible hit zones on desktop */
+  /* Touch zones — bottom corners only, minimal visual footprint */
   #touch-zones {
     display: none;
-    position: absolute; bottom:0; left:0; right:0; height:55%;
+    position: absolute; bottom:0; left:0; right:0;
     pointer-events: none;
     z-index: 5;
+    height: 100%;
+    width: 100%;
   }
   /* Show on any touch-capable device */
   @media (hover:none) and (pointer:coarse), (pointer:coarse) {
     #touch-zones { display:flex; }
   }
   .tz {
-    flex:1; pointer-events:all;
+    position: absolute; pointer-events:all;
     display:flex; align-items:center; justify-content:center;
-    opacity: 0.18;
+    opacity: 0.12;
     transition: opacity 0.1s;
     -webkit-tap-highlight-color: transparent;
     border-radius: 0;
+    width: 100px; height: 100px;
   }
-  .tz.active { opacity: 0.65; background: rgba(255,183,0,0.06); }
+  #tz-up { bottom: 0; left: 0; }
+  #tz-dn { bottom: 0; right: 0; }
+  .tz.active { opacity: 0.5; background: rgba(255,183,0,0.06); }
   .tz-icon {
     font-family:'Rajdhani',sans-serif; font-weight:700;
-    font-size:15px; letter-spacing:3px; color:var(--amber);
-    border:1.5px solid var(--amber); padding:10px 22px;
+    font-size:13px; letter-spacing:2px; color:var(--amber);
+    border:1.5px solid var(--amber); padding:8px 16px;
     border-radius: 3px;
     background: rgba(255,183,0,0.07);
     pointer-events: none;
+    white-space: nowrap;
   }
   /* Mute button */
   #mute-btn {
@@ -284,8 +290,10 @@
       height: auto !important;
     }
 
-    /* Touch zones take full lower half of the rotated view */
-    #touch-zones { display: flex !important; height: 50%; }
+    /* Touch zones stay in corners for portrait */
+    #touch-zones { display: flex !important; }
+    .tz { width: 90px; height: 90px; }
+    .tz-icon { font-size: 11px; padding: 6px 14px; }
 
     /* Scale down HUD text so it fits the narrower rotated height */
     .hud-val   { font-size: 14px; }
@@ -304,7 +312,8 @@
 
   /* ── Landscape mobile (phone held sideways) ── */
   @media (max-height: 500px) and (orientation: landscape) {
-    #touch-zones { display: flex !important; height: 65%; }
+    #touch-zones { display: flex !important; }
+    .tz { width: 80px; height: 80px; }
     .tz { align-items: center; }
     .tz-icon { padding: 8px 18px; font-size: 12px; }
     .jet-btn { padding: 10px 30px; font-size: 13px; min-height: 44px; }
