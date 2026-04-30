@@ -117,6 +117,7 @@
     gap: 14px;
     background: radial-gradient(ellipse at center, #0a162888 0%, #050a14ee 100%);
     transition: opacity 0.4s;
+    z-index: 20;
   }
   .overlay.hidden { opacity:0; pointer-events:none; }
 
@@ -179,7 +180,7 @@
     display: none;
     position: absolute; bottom:0; left:0; right:0; height:55%;
     pointer-events: none;
-    z-index: 10;
+    z-index: 5;
   }
   /* Show on any touch-capable device */
   @media (hover:none) and (pointer:coarse), (pointer:coarse) {
@@ -901,8 +902,9 @@ canvas.addEventListener('touchmove', e => {
   }
 }, { passive: false });
 
-// Buttons — touchstart for instant mobile response, stopPropagation to prevent bubbling
+// Buttons — support pointer, touch, and click so mobile launch is reliable
 function safeStart(e){
+  if (state === 'play') return;
   e.preventDefault();
   e.stopPropagation();
   unlockAudio();
@@ -911,8 +913,13 @@ function safeStart(e){
 
 document.getElementById('btn-launch').addEventListener('pointerdown', safeStart);
 document.getElementById('btn-launch').addEventListener('touchstart', safeStart, { passive: false });
+document.getElementById('btn-launch').addEventListener('touchend', safeStart, { passive: false });
+document.getElementById('btn-launch').addEventListener('click', safeStart);
+
 document.getElementById('btn-reboot').addEventListener('pointerdown', safeStart);
 document.getElementById('btn-reboot').addEventListener('touchstart', safeStart, { passive: false });
+document.getElementById('btn-reboot').addEventListener('touchend', safeStart, { passive: false });
+document.getElementById('btn-reboot').addEventListener('click', safeStart);
 
 // ── Helpers ───────────────────────────────────
 function rand(a,b){ return a+Math.random()*(b-a); }
